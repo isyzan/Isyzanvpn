@@ -1,4 +1,4 @@
-name: ISYZAN Incy Auto-Update (100-150 servers)
+name: ISYZAN Incy Auto-Update (с проверкой)
 
 on:
   schedule:
@@ -9,18 +9,18 @@ jobs:
   update-incy:
     runs-on: ubuntu-latest
     steps:
-      - name: Download and trim Incy subscription
-        run: |
-          # Скачиваем полный список
-          curl -s https://solovyov-jenya2004.vercel.app/final_sorted/ > full_list.txt
-          
-          # Берём только первые 150 строк (или меньше, если их меньше)
-          head -150 full_list.txt > isyzan_incy.txt
-          
-          # Показываем количество строк
-          echo "✅ Всего строк в подписке: $(wc -l < isyzan_incy.txt)"
-          echo "✅ Первые 5 строк:"
-          head -5 isyzan_incy.txt
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install requests
+        run: pip install requests
+
+      - name: Run filter
+        run: python filter.py
 
       - name: Upload Incy config
         uses: actions/upload-artifact@v4
