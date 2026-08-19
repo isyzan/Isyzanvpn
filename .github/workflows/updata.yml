@@ -1,4 +1,4 @@
-name: ISYZAN Auto-Update Subscription
+name: ISYZAN Incy Auto-Update
 
 on:
   schedule:
@@ -6,24 +6,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  update:
+  update-incy:
     runs-on: ubuntu-latest
     steps:
-      - name: Download Happ subscription
-        run: |
-          curl -s https://solovyov-jenya2004.vercel.app/random/ > isyzan_happ.txt
-          echo "✅ Happ подписка скачана"
-
       - name: Download Incy subscription
         run: |
           curl -s https://solovyov-jenya2004.vercel.app/final_sorted/ > isyzan_incy.txt
           echo "✅ Incy подписка скачана"
-
-      - name: Upload Happ config
-        uses: actions/upload-artifact@v4
-        with:
-          name: isyzan-happ
-          path: isyzan_happ.txt
 
       - name: Upload Incy config
         uses: actions/upload-artifact@v4
