@@ -1,4 +1,4 @@
-name: ISYZAN Incy Auto-Update
+name: ISYZAN Incy Auto-Update (100-150 servers)
 
 on:
   schedule:
@@ -9,17 +9,21 @@ jobs:
   update-incy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Download Incy subscription
+      - name: Download and trim Incy subscription
         run: |
-          curl -s https://solovyov-jenya2004.vercel.app/final_sorted/ > isyzan_incy.txt
-          echo "✅ Incy подписка скачана"
+          # Скачиваем полный список
+          curl -s https://solovyov-jenya2004.vercel.app/final_sorted/ > full_list.txt
+          
+          # Берём только первые 150 строк (или меньше, если их меньше)
+          head -150 full_list.txt > isyzan_incy.txt
+          
+          # Показываем количество строк
+          echo "✅ Всего строк в подписке: $(wc -l < isyzan_incy.txt)"
+          echo "✅ Первые 5 строк:"
+          head -5 isyzan_incy.txt
 
-      - name: Commit and push if changed
-        run: |
-          git config user.name "ISYZAN Bot"
-          git config user.email "bot@isyzan.local"
-          git add isyzan_incy.txt
-          git diff --staged --quiet || git commit -m "Auto-update Incy $(date +'%Y-%m-%d %H:%M')"
-          git push
+      - name: Upload Incy config
+        uses: actions/upload-artifact@v4
+        with:
+          name: isyzan-incy
+          path: isyzan_incy.txt
