@@ -2,33 +2,31 @@ name: ISYZAN Auto-Update Subscription
 
 on:
   schedule:
-    - cron: '0 */6 * * *'   # каждые 6 часов
-  workflow_dispatch:         # ручной запуск
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
 
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Download latest subscriptions
+      - name: Download Happ subscription
         run: |
-          echo "📥 Скачиваю подписки для Happ и Incy..."
-          curl -s https://solovyov-jenya2004.vercel.app/random/ > isyzan_subscription_happ.txt
-          curl -s https://solovyov-jenya2004.vercel.app/final_sorted/ > isyzan_subscription_incy.txt
-          
-      - name: Show downloaded content (for debug)
+          curl -s https://solovyov-jenya2004.vercel.app/random/ > isyzan_happ.txt
+          echo "✅ Happ подписка скачана"
+
+      - name: Download Incy subscription
         run: |
-          echo "✅ Happ подписка (первые 5 строк):"
-          head -5 isyzan_subscription_happ.txt
-          echo "---"
-          echo "✅ Incy подписка (первые 5 строк):"
-          head -5 isyzan_subscription_incy.txt
-          
-      - name: Commit and push if changed
-        run: |
-          git config user.name "ISYZAN Bot"
-          git config user.email "bot@isyzan.local"
-          git add isyzan_subscription_happ.txt isyzan_subscription_incy.txt
-          git diff --staged --quiet || git commit -m "Auto-update subscriptions $(date +'%Y-%m-%d %H:%M')"
-          git push
+          curl -s https://solovyov-jenya2004.vercel.app/final_sorted/ > isyzan_incy.txt
+          echo "✅ Incy подписка скачана"
+
+      - name: Upload Happ config
+        uses: actions/upload-artifact@v4
+        with:
+          name: isyzan-happ
+          path: isyzan_happ.txt
+
+      - name: Upload Incy config
+        uses: actions/upload-artifact@v4
+        with:
+          name: isyzan-incy
+          path: isyzan_incy.txt
