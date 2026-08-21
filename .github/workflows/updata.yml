@@ -2,7 +2,7 @@ name: ISYZAN Incy Auto-Update (с проверкой)
 
 on:
   schedule:
-    - cron: '0 */2 * * *'   # каждые 2 часа
+    - cron: '0 */2 * * *'
   workflow_dispatch:
 
 jobs:
@@ -22,16 +22,16 @@ jobs:
       - name: Run filter
         run: python filter.py
 
-      - name: Upload Incy config (артефакт)
+      - name: Upload Incy config
         uses: actions/upload-artifact@v4
         with:
-          name: isyzan-incy
-          path: isyzan_incy.txt
+          name: Isyzan-vpn
+          path: Isyzan_vpn.txt
 
       - name: Commit and push if changed
         run: |
           git config user.name "ISYZAN Bot"
           git config user.email "bot@isyzan.local"
-          git add isyzan_incy.txt
+          git add Isyzan_vpn.txt
           git diff --staged --quiet || git commit -m "Auto-update Incy $(date +'%Y-%m-%d %H:%M')"
           git push
