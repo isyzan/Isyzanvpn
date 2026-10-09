@@ -1,11 +1,11 @@
 # Isyzan vpn🐱
 # Поддержка: @isyzan
 # Канал: @isy_zan1
-# Обновлено: 2026-10-08 19:47:09
+# Обновлено: 2026-10-09 00:14:13
 # Рабочие серверы + 20 нерабочих (для теста)
 
-Payment required
-DEPLOYMENT_DISABLED
-cle1::wt7c8-1791488829677-a5cb2b5562fc
 
+Payment required
+cle1::gschw-1791504852912-067de9bad4ea
+DEPLOYMENT_DISABLED
 
